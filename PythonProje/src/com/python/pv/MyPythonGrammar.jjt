@@ -1,0 +1,469 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+ options {    VISITOR = true;  }
+ PARSER_BEGIN(MyPythonGrammar)
+  package com.python.pv;
+
+public class MyPythonGrammar extends JFrame {
+  public MyPythonGrammar() {
+
+	Container c=getContentPane();
+		c.setLayout(new BorderLayout());
+		setTitle("python2pv");
+		JPanel jp=new JPanel();
+		JButton jb1=new JButton("导入python文件");
+		JButton jb2=new JButton("转为PV");
+		JButton jb3=new JButton("导出PV文件");
+		JPanel jp1=new JPanel();
+	    JTextArea ta1=new JTextArea(20,26);
+	    JTextArea ta2=new JTextArea(20,26);
+	    jp1.setLayout(new BorderLayout());
+	    jp.setLayout(new FlowLayout(0));
+	    ta1.setLineWrap(true);
+	    ta2.setLineWrap(true); 
+	    ta1.setFont(new Font("黑体",Font.BOLD,16));
+	    ta2.setFont(new Font("黑体",Font.BOLD,16));
+	    JScrollPane jsp=new JScrollPane(ta1);
+	    JScrollPane jsp1=new JScrollPane(ta2);
+	    jp1.add(jsp,BorderLayout.WEST);
+	    jp1.add(jsp1,BorderLayout.EAST);
+	    jp.add(jb1);
+	    jp.add(jb2);
+	    jp.add(jb3);
+	    c.add(jp1,BorderLayout.CENTER);
+	    c.add(jp,BorderLayout.NORTH);
+	    c.show();		
+	    setSize(500,500);
+	    setVisible(true);
+	    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	    jb1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				File file=new File("F:\\eclipse\\eclipse\\eclipse-workspace\\PythonProje\\src\\com\\python\\pv\\python2pv.txt");
+				try {
+					FileReader fr=new FileReader(file);
+					BufferedReader bf=new BufferedReader(fr);
+					char[] c=new char[200];
+					int len;
+					while((len=bf.read(c))!=-1) {
+						String s=new String(c,0,len);
+						ta1.setText(s);						
+					}
+					bf.close();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}	    	
+	    });
+        jb2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				File file=new File("F:\\eclipse\\eclipse\\eclipse-workspace\\PythonProje\\src\\com\\python\\pv\\python2succ.txt");
+				try {
+					FileReader fr=new FileReader(file);
+					BufferedReader br1=new BufferedReader(fr);
+                    char[] c=new char[200];
+					int len;
+					while((len=br1.read(c))!=-1) {
+						String s=new String(c,0,len);
+						ta2.setText(s);						
+					}
+					br1.close();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}	    	
+	    });
+    }
+public InputStream openfile() {			
+	File file=new File("F:\\eclipse\\eclipse\\eclipse-workspace\\PythonProje\\src\\com\\python\\pv\\python2pv.txt");
+		try {
+			FileReader fr=new FileReader(file);
+			BufferedReader bis=new BufferedReader(fr);
+			char[] c=new char[200];
+			int len;
+			while((len=bis.read(c))!=-1) {
+				String str=new String(c,0,len);
+				InputStream incode=new ByteArrayInputStream(str.getBytes());   
+				return incode;						
+			}				
+			fr.close();	  
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return null;
+	} 	    public static void main(String args [])   {    
+    new MyPythonGrammar(new MyPythonGrammar().openfile());     try     {
+     // new MyPythonGrammar(System.in);
+       System.out.println("Reading from standard input...");
+      System.out.print("Enter an expression like \"python\" :");
+       SimpleNode n = MyPythonGrammar.Start();
+        
+      StringBuffer s=new StringBuffer("the input is:");
+      String str=n.jjtAccept(new MyPythonVisitor(),s).toString();
+
+     File file=new File("F:\\eclipse\\eclipse\\eclipse-workspace\\PythonProje\\src\\com\\python\\pv\\python2succ.txt");
+  	 FileWriter fw =new FileWriter(file);
+  	 BufferedWriter bw=new BufferedWriter(fw);
+       bw.write(str);
+       bw.flush();
+       bw.close(); 
+      System.out.println(str);
+      System.out.println("Thank you.");
+      }     catch (Exception e)
+       {
+          System.out.println("Oops.");
+          System.out.println(e.getMessage());
+          }
+       }
+}
+ PARSER_END(MyPythonGrammar)
+ SKIP :
+ {   " " | "\t" | "\n" | "\r" | < "//" (~[ "\n", "\r" ])*     (       "\n"     | "\r"     | "\r\n"     ) > | < "/*" (~[ "*" ])* "*"     (       ~[ "/" ] (~[ "*" ])* "*"     )*     "/" > } 
+
+TOKEN : /* OPERATORS */
+{
+  
+  < EQU : "=" >
+| < SEMICOLON : ";" >
+| < LP : "(" >
+| < RP : ")" >
+| < EQ : "==">
+| < NOTEQ : "!=">
+| < LT : "< ">
+| < SMALLEQ : "<=">
+| < NEQ : "<>">
+| < OR : "||">
+| < AND : "&&">
+| < ISTO : "==>">
+| < IMPLY : "->">
+| < BIGEQ : ">=">
+| < POINT:".">
+| < YINHAO:"^">
+| < COMMA : "," >
+| < FENHAO : ":" >
+| < LB: "[">
+| < RB: "]">
+| < OBRACE : "{" >  
+| < CBARCE : "}" > 
+}
+ TOKEN :
+{  
+  <IF:"if">
+| <ELSE:"else">
+| <IMPORT:"import">
+| <WHILE:"while">
+| <TRUE:"true">
+| < CLIENT:"Client">
+| < SERVER:"Server">
+}
+ TOKEN : /* IDENTIFIERS */
+{
+ <ident:  <LETTER> (<LETTER>|<DIGIT>)* >
+ |  < LETTER: ["_","a"-"z","A"-"Z"] >
+ |  < DIGIT: ["0"-"9"] >
+}   SimpleNode Start() :
+{}
+{
+  HeadPara() 
+  {
+    return jjtThis;
+  }
+}
+
+void HeadPara() :
+{}
+{
+  FirstPara()
+| SecondPara()
+| ThirdPara()
+| ForthPara()
+}
+void FirstPara() :
+{}
+{
+
+  Firstassign() 
+
+} void SecondPara() :
+{}
+{
+  
+  If()condition()fenhao()Firstassign()elsestate()fenhao()Firstassign() 
+
+}
+
+void ThirdPara(): { } {
+
+  serverimport()commastate()outband()getsockethost()commafun()
+
+  }
+ void ForthPara(): { } {
+  clientimport()commastate()commafun()commafun()
+   }
+void commastate(): { } {
+importpackge()Identifier()getsockethost()getsockethost()
+  Firstassign()socketbind()
+
+  }
+void getsockethost(): { } {
+   Identifier()Equ()commafun()
+  }
+
+void commafun(): { } {
+
+Identifier()pointmethod()Identifier()socketlp()(Identifier())*socketrp()
+
+   }
+void socketbind(): {} {
+
+Identifier()pointmethod()Identifier()socketlp()socketlp()Identifier()socketcomma()Identifier()
+socketrp()socketrp()
+
+  }
+void outband(): { } {
+
+Identifier()pointmethod()Identifier()socketlp()Integer()socketrp() whiletrue()sockettrue()
+Identifier()socketcomma()Identifier()Equ()Identifier()pointmethod()Identifier()socketlp()socketrp()
+  }    
+ 
+void Firstassign() :
+{}
+{
+
+  Identifier()Equ()(Identifier()|Integer())?
+
+}
+void condition() :
+{ }
+{
+  
+  Identifier()(EQstate()|biger()|smaller()|noteq())*Identifier()
+
+}
+
+void Identifier() :
+{
+Token token;
+}
+{
+  token=<ident>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+ void pointmethod() :
+{
+Token token;
+}
+{
+  token=<POINT>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void Integer() :
+{
+Token token;
+}
+{
+  token=<DIGIT>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+
+void Equ() :
+{
+Token token;
+}
+{
+  token=<EQU>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+
+
+void EQstate() :
+{
+Token token;
+}
+{
+  token=<EQ>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+
+void biger() :
+{
+Token token;
+}
+{
+  token=<BIGEQ>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+
+void smaller() :
+{
+Token token;
+}
+{
+  token=<SMALLEQ>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+
+void noteq() :
+{
+Token token;
+}
+{
+  token=<NOTEQ>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void fenhao() :
+{
+Token token;
+}
+{
+  token=<FENHAO>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void elsestate() :
+{
+Token token;
+}
+{
+  token=<ELSE>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void If() :
+{
+Token token;
+}
+{
+  token=<IF>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void importpackge() :
+{
+Token token;
+}
+{
+  token=<IMPORT>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void whiletrue() :
+{
+Token token;
+}
+{
+  token=<WHILE>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void sockettrue() :
+{
+Token token;
+}
+{
+  token=<TRUE>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+
+void socketlp() :
+{
+Token token;
+}
+{
+  token=<LP>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void socketrp() :
+{
+Token token;
+}
+{
+  token=<RP>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void socketletter() :
+{
+Token token;
+}
+{
+  token=<LETTER>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}  
+void socketcomma() :
+{
+Token token;
+}
+{
+  token=<COMMA>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void clientimport() :
+{
+Token token;
+}
+{
+  token=<CLIENT>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
+void serverimport() :
+{
+Token token;
+}
+{
+  token=<SERVER>
+  {
+    jjtn000.jjtSetValue(token.image);
+  }
+}
